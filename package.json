@@ -1,0 +1,33 @@
+{
+  "name": "onlinecourses",
+  "version": "1.0.0",
+  "description": "onlinecourses of kg, Primary, JHS and SHS in Ghana",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Online",
+    "courses",
+    "free",
+    "shs",
+    "Primary",
+    "Senior",
+    "High",
+    "Junior",
+    "high",
+    "Teachers",
+    "Students",
+    "People",
+    "Ghana",
+    "online"
+  ],
+  "author": "Bismark Obeng",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.14",
+    "morgan": "^1.10.0"
+  }
+}
