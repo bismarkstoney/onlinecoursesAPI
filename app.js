@@ -13,10 +13,13 @@ const PORT = process.env.PORT || 3000;
 
 //connect databse
 connectDB();
-//using the morgan middle
+
+//MIDDLEWARES
+//using the morgan middleware
 if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
+app.use(express.json());
 
 //moubt the routes
 app.use('/api/v1/courses', coursesRouter);
