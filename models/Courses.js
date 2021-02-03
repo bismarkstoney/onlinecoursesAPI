@@ -8,6 +8,7 @@ const CouserSchema = new mongoose.Schema({
 		maxlength: [250, 'Ttitle can exce 25 characters long'],
 		minlength: [10, 'Title can be less than 10 chararcters'],
 	},
+	videos: [Array],
 });
 
 module.exports = mongoose.model('Courses', CouserSchema);
