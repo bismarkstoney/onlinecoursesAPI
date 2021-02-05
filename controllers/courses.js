@@ -46,14 +46,17 @@ exports.getAllCourses = asyncHandler(async (req, res, next) => {
 	}
 	//Pagination
 	const page = parseInt(req.query.page, 10) || 1;
-	const limit = parseInt(req, query.limit, 10) || 1;
+	const limit = parseInt(req, query.limit, 10) || 9;
 	const startIndex = (page - 1) * limit;
 	const endIndex = page * limit;
 	const total = await Courses.countDocuments();
 
 	query = query.skip(startIndex).limit(limit);
 
-	const course = await query;
+	const course = await query.populate({
+		path: 'student',
+		select: 'name',
+	});
 
 	//pagination
 	const pagination = {};

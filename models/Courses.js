@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const slugify = require('slugify');
 
 const geocoder = require('../utils/geocoder');
+
 const CouserSchema = new mongoose.Schema({
 	title: {
 		type: String,
@@ -52,6 +53,10 @@ const CouserSchema = new mongoose.Schema({
 	},
 	comments: {
 		type: String,
+	},
+	student: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Students',
 	},
 });
 

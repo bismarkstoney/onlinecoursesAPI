@@ -2,6 +2,7 @@ const express = require('express');
 const dontenv = require('dotenv');
 const morgan = require('morgan');
 const coursesRouter = require('./routes/courses');
+const studentRouter = require('./routes/students');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 dontenv.config({ path: './config/config.env' });
@@ -24,6 +25,7 @@ app.use(express.json());
 
 //moubt the routes
 app.use('/api/v1/courses', coursesRouter);
+app.use('/api/v1/students', studentRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
