@@ -23,6 +23,7 @@ const CouserSchema = new mongoose.Schema({
 		},
 		formattedAddress: String,
 		city: String,
+
 		state: String,
 		zipcode: String,
 		country: String,

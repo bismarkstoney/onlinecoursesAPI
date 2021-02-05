@@ -1,3 +1,4 @@
+const geocoder = require('../utils/geocoder');
 const Courses = require('../models/Courses');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
@@ -19,7 +20,16 @@ exports.createCourse = asyncHandler(async (req, res, next) => {
 //@route GET /api/v1/courses/
 //@acess Public
 exports.getAllCourses = asyncHandler(async (req, res, next) => {
-	const course = await Courses.find({});
+	let query;
+	let queryStr = JSON.stringify(req.query);
+	queryStr = queryStr.replace(
+		/\b(gt|gte|lte|in|eq)\b/g,
+		(match) => `$${match}`
+	);
+	console.log(queryStr);
+	query = Courses.find(JSON.parse(queryStr));
+
+	const course = await query;
 	res.status(201).json({
 		results: course.length,
 		data: course,
@@ -76,5 +86,43 @@ exports.deleteCourse = asyncHandler(async (req, res, next) => {
 	res.status(200).json({
 		message: 'record deleted',
 		success: true,
+	});
+});
+
+//@desc  Get a course within a radius
+//@route GET /api/v1/courses/:radius/:distance
+//@acess Priblic
+exports.getCoursesInRadius = asyncHandler(async (req, res, next) => {
+	const { zipcode, distance } = req.params;
+
+	//get lat/lng from geocoder
+	const loc = await geocoder.geocode(zipcode);
+	const lat = loc[0].latitude;
+	const lng = loc[0].longitude;
+
+	//calculate radius using radians
+	//Divide dist by radius on Earth
+	//Earth Radius = 3,963 mi / 6378 km
+	const radius = distance / 3963;
+	const courses = await Courses.find({
+		location: {
+			$geoWithin: {
+				$centerSphere: [[lng, lat], radius],
+			},
+		},
+	});
+
+	res.status(200).json({
+		data: courses,
+		results: courses.length,
+	});
+});
+
+exports.getCoursesInCity = asyncHandler(async (req, res, next) => {
+	const courses = await Courses.find({ city: req.query });
+
+	res.status(200).json({
+		data: courses,
+		results: courses.length,
 	});
 });
