@@ -31,6 +31,27 @@ const CouserSchema = new mongoose.Schema({
 	address: {
 		type: String,
 	},
+	price: {
+		type: Number,
+	},
+	instructor: {
+		type: String,
+	},
+	Students: {
+		type: String,
+	},
+	courseType: {
+		type: String,
+	},
+	playlist: {
+		type: [Array],
+	},
+	rating: {
+		type: String,
+	},
+	comments: {
+		type: String,
+	},
 });
 
 //create a slug from the title
