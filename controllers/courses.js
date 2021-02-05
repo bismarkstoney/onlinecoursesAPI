@@ -21,13 +21,29 @@ exports.createCourse = asyncHandler(async (req, res, next) => {
 //@acess Public
 exports.getAllCourses = asyncHandler(async (req, res, next) => {
 	let query;
-	let queryStr = JSON.stringify(req.query);
+	const reqQuery = { ...req.query };
+	//fields to exclude
+	const removeFields = ['select', 'sort'];
+	removeFields.forEach((param) => delete reqQuery[param]);
+	let queryStr = JSON.stringify(reqQuery);
 	queryStr = queryStr.replace(
 		/\b(gt|gte|lte|in|eq)\b/g,
 		(match) => `$${match}`
 	);
 	console.log(queryStr);
+	//Finding Resourcs
 	query = Courses.find(JSON.parse(queryStr));
+	//select fileds
+	if (req.query.select) {
+		const fields = req.query.select.split(',').join(' ');
+		query = query.select(fields);
+	}
+	if (req.query.sort) {
+		const sorBy = req.query.sort.split(',').join(' ');
+		query = query.sort(sorBy);
+	} else {
+		query = query.sort('-createdAt');
+	}
 
 	const course = await query;
 	res.status(201).json({
